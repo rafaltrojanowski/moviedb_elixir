@@ -22,6 +22,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
+config :auth_me, Moviedb.Account.Guardian,
+  issuer: "auth_me",
+  secret_key: "t44J5Zwk700XeFLizAIGEaxWK4KbEGU07OgekLsBWJFY25XrYQ8SZ6cPPiHHiUWZ"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

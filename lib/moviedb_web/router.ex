@@ -1,6 +1,14 @@
 defmodule MoviedbWeb.Router do
   use MoviedbWeb, :router
 
+  pipeline :auth do
+    plug Moviedb.Account.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -14,9 +22,18 @@ defmodule MoviedbWeb.Router do
   end
 
   scope "/", MoviedbWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :auth]
 
     get "/", MovieController, :index
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :login
+    post "/logout", SessionController, :logout
+  end
+
+  scope "/", MoviedbWeb do
+    pipe_through [:browser, :auth, :ensure_auth]
+
     resources "/movies", MovieController
   end
 
