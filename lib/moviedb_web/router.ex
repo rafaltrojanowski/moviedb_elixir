@@ -16,7 +16,7 @@ defmodule MoviedbWeb.Router do
   scope "/", MoviedbWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", MovieController, :index
     resources "/movies", MovieController
   end
 
